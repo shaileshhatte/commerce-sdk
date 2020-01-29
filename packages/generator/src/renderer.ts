@@ -105,7 +105,7 @@ function createDto(webApiModels: WebApiBaseUnit[]): string {
  * @param boundedContexts
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function createIndex(boundedContexts: any): string {
+export function createIndex(boundedContexts: any): string {
   return indexTemplate({
     apiSpec: boundedContexts
   });
@@ -156,7 +156,7 @@ function renderApi(
  * @param renderDir Directory path to save the rendered API files
  * @returns Promise<void>
  */
-function renderApiFamily(
+export function renderApiFamily(
   apiFamily: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apiFamilyConfig: any,
@@ -211,14 +211,19 @@ export function renderTemplates(
   const allPromises: Promise<void>[] = [];
   apiFamilyNames.forEach((apiFamily: string) => {
     allPromises.push(
-      renderApiFamily(apiFamily, apiFamilyRamlConfig, apiRamlDir, renderDir)
+      module.exports.renderApiFamily(
+        apiFamily,
+        apiFamilyRamlConfig,
+        apiRamlDir,
+        renderDir
+      )
     );
   });
   //create index file that exports all the api families in the root
   return Promise.all(allPromises).then(() => {
     fs.writeFileSync(
       path.join(renderDir, "index.ts"),
-      createIndex(apiFamilyNames)
+      module.exports.createIndex(apiFamilyNames)
     );
   });
 }
