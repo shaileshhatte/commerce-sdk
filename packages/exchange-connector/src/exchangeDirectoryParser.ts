@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import fs from "fs-extra";
+import fs from "fs";
 import path from "path";
 import unzipper from "unzipper";
 
@@ -15,17 +15,13 @@ function getFiles(directory): fs.Dirent[] {
 }
 
 /**
- * @description Extracts zip files present in the given directory.
- *   zip files are usually downloaded from Anypoint exchange
- * @export
- * @param {string} directory Directory we want to download to
- * @param {boolean} [removeFiles=true] Whether to remove the zip files after extraction
- * @returns {Promise<void>} Just a promise to indicate we are done.
+ * TODO: Tests need to be written.  There was only one test for this method and
+ *       it just tested that the method did nothing with an empty dir
+ * Extracts zip files present in the given directory.
+ * zip files are usually downloaded from Anypoint exchange
+ * @param directory
  */
-export function extractFiles(
-  directory: string,
-  removeFiles = true
-): Promise<void> {
+export function extractFiles(directory: string): Promise<void> {
   const files: fs.Dirent[] = getFiles(directory);
   const promises: Promise<void>[] = [];
   files.forEach(file => {
@@ -43,12 +39,7 @@ export function extractFiles(
                 )
               })
               .on("error", reject)
-              .on("close", () => {
-                if (removeFiles) {
-                  fs.removeSync(path.join(path.resolve(directory), file.name));
-                }
-                resolve();
-              })
+              .on("close", resolve)
           );
         })
       );

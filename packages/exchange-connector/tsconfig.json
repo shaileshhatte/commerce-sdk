@@ -6,10 +6,8 @@
     // NOTE: Everything except what you want compiled into JS should be in the exclusions.
     "exclude": [
         "node_modules",
-        "gulpfile.ts",
+        "test",
+        "release",
         "dist"
-    ],
-    "include": [
-        "./src"
-    ]      
+    ]
 }

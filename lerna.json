@@ -2,5 +2,6 @@
   "packages": [
     "packages/*"
   ],
-  "version": "1.3.0-alpha.6"
+  "version": "independent",
+  "lerna": "3.18.4"
 }

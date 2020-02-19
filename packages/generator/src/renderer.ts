@@ -12,6 +12,7 @@ import {
   processApiFamily,
   getApiName,
   resolveApiModel,
+  groupByCategory,
   getNormalizedName
 } from "./parser";
 
@@ -195,13 +196,14 @@ function renderApi(
  * @param {RestApi[]} apis
  */
 export function createVersionFile(
-  apis: { [key: string]: RestApi[] }
+  apis: RestApi[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: { [key: string]: any }
 ): void {
+  const apiFamilyGroups = groupByCategory(apis, config["apiFamily"]);
   fs.writeFileSync(
-    // Write to the directory with the API definitions
     path.join(__dirname, "..", "VERSION.md"),
-    versionTemplate(apis)
+    versionTemplate(apiFamilyGroups)
   );
 }
 
@@ -285,8 +287,6 @@ export function renderTemplates(config: any): Promise<void> {
       path.join(config.renderDir, "helpers.ts"),
       createHelpers(config)
     );
-
-    createVersionFile(apiFamilyRamlConfig);
   });
 }
 
