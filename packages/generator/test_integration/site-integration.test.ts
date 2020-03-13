@@ -29,7 +29,7 @@ describe("Shop client integration GET tests", () => {
       baseUri: BASE_URI
     });
 
-    return expect(newLocalClient.getSite()).to.be.rejected;
+    return expect(newLocalClient.getSite()).to.be.true;
   });
 
   it("Returns object calling GET with token", () => {
